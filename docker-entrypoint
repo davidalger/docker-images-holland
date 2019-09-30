@@ -17,8 +17,8 @@ if [ ! -d /etc/holland/providers ]; then
 	cp -r /etc/holland.orig/providers /etc/holland/providers
 fi
 
-## Change the default config to log to stdout rather than a log file
-sed -i 's/\/var\/log\/holland\/holland\.log/\/dev\/stdout/g' /etc/holland/holland.conf
+## Send logs to stdout of PID 1 (docker container logs)
+sed -i 's#/var/log/holland/holland\.log#/proc/1/fd/1#g' /etc/holland/holland.conf
 
 ## Override default crontab if job config is specified
 CROND_JOB_CONFIG="${CROND_JOB_CONFIG:-}"
