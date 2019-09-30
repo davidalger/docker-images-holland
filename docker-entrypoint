@@ -20,5 +20,11 @@ fi
 ## Change the default config to log to stdout rather than a log file
 sed -i 's/\/var\/log\/holland\/holland\.log/\/dev\/stdout/g' /etc/holland/holland.conf
 
+## Override default crontab if job config is specified
+CROND_JOB_CONFIG="${CROND_JOB_CONFIG:-}"
+if [[ -n "${CROND_JOB_CONFIG}" ]]; then
+    echo "${CROND_JOB_CONFIG}" | base64 -d > /etc/cron.d/holland
+fi
+
 ## Start crond to run holland on schedule
 exec "$@"
